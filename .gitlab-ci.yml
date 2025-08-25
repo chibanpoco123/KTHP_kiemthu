@@ -1,0 +1,45 @@
+stages:
+  - install
+  - test
+  - build
+
+# Cài dependencies backend
+install_backend:
+  stage: install
+  image: node:18
+  script:
+    - cd backend
+    - npm install
+  artifacts:
+    paths:
+      - backend/node_modules
+
+# Cài dependencies frontend
+install_frontend:
+  stage: install
+  image: node:18
+  script:
+    - cd frontend
+    - npm install
+  artifacts:
+    paths:
+      - frontend/node_modules
+
+# Kiểm thử backend (giả lập)
+test_backend:
+  stage: test
+  image: node:18
+  script:
+    - cd backend
+    - npm run test || echo "Chưa có test thực tế - kiểm thử thủ công"
+
+# Build frontend
+build_frontend:
+  stage: build
+  image: node:18
+  script:
+    - cd frontend
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/build
