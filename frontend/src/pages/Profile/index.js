@@ -1,14 +1,25 @@
 import React from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Text, Button, Alert, AlertIcon, Box } from "@chakra-ui/react";
+import { Text, Button, Alert, AlertIcon, Box,useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
+  const navigate = useNavigate()
   const { user, logout, loggedIn } = useAuth();
+    const toast = useToast();
+const handleLogout = async () => {
+  await logout();      // chờ logout hoàn tất
+  toast({
+      title: "Đăng xuất thành công.",
+      description: "Bạn đã đăng xuất khỏi hệ thống.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  navigate("/");       // rồi mới chuyển về trang chủ
+};
 
-  const handleLogout = async () => {
-    logout();
-  };
 
   return (
     <div>
@@ -42,11 +53,10 @@ function Profile() {
 
           <br />
           <br />
-          <Link to="/">
+          
             <Button colorScheme="pink" variant="solid" onClick={handleLogout}>
               Logout
             </Button>
-          </Link>
         </>
       )}
     </div>

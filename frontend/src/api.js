@@ -68,15 +68,20 @@ export const fetchMe = async () => {
 };
 
 export const fetchLogout = async () => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/logout`,
-    {
-      refresh_token: localStorage.getItem("refresh-token"),
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_BASE_ENDPOINT}/auth/logout`,
+      {
+        refresh_token: localStorage.getItem("refresh-token"),
+      }
+    );
+    return data;
+  } catch (err) {
+    console.error("Logout API failed:", err);
+    return null; // để client vẫn xử lý tiếp
+  }
 };
-
+  
 export const postOrder = async (input) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/order`,

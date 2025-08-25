@@ -13,9 +13,11 @@ import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom"; // ✅ import useNavigate
 
-function Signin({ history }) {
+function Signin() {
   const { login } = useAuth();
+  const navigate = useNavigate(); // ✅ thay cho history
 
   const formik = useFormik({
     initialValues: {
@@ -29,13 +31,17 @@ function Signin({ history }) {
           email: values.email,
           password: values.password,
         });
-        login(loginResponse);
-        history.push("/profile");
+
+        login(loginResponse); // lưu token/user vào context
+        navigate("/"); // ✅ chuyển hướng
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
+        bag.setErrors({
+          general: e.response?.data?.message || "Đăng nhập thất bại",
+        });
       }
     },
   });
+
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
@@ -57,7 +63,7 @@ function Signin({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
+                  isInvalid={formik.touched.email && !!formik.errors.email}
                 />
               </FormControl>
 
@@ -69,7 +75,7 @@ function Signin({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
+                  isInvalid={formik.touched.password && !!formik.errors.password}
                 />
               </FormControl>
 
@@ -85,6 +91,3 @@ function Signin({ history }) {
 }
 
 export default Signin;
-
-
-// TODO:

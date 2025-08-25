@@ -13,10 +13,10 @@ import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
-
+import { Navigate, useNavigate } from "react-router-dom";
 function Signup({ history }) {
   const { login } = useAuth();
-
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -31,7 +31,8 @@ function Signup({ history }) {
           password: values.password,
         });
         login(registerResponse);
-        history.push("/profile");
+       navigate("/profile");
+        alert('đăng nhập thành công ')
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
       }
