@@ -48,7 +48,7 @@ const handleLogout = async () => {
           </Text>
           <Box mt={4}>
             <Text fontSize={20}>email: {user.email}</Text>
-            <Text fontSize={20}>role: {user.role}</Text>
+            <Text fontSize={20}>role nè nha: {user.role}</Text>
           </Box>
 
           <br />
