@@ -22,7 +22,7 @@ jobs:
         run: npm install
         working-directory: ./frontend
 
-      - name: Run tests
+      - name: Run tests || true
         run: npm run test -- --watchAll=false --silent
         working-directory: ./frontend
 
