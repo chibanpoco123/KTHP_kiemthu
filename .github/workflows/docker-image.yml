@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]         # chạy khi push vào main
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]         # chạy khi có PR target main
+    branches: [ "main" ]
 
 jobs:
   test:
@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -22,10 +23,8 @@ jobs:
         working-directory: ./frontend
 
       - name: Run tests
-        run: npm run test
+        run: npm run test -- --watchAll=false --silent
         working-directory: ./frontend
-    env:
-        NODE_OPTIONS: --no-warnings  
 
   build:
     needs: test
@@ -33,6 +32,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -56,12 +56,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: feature/merge-to-main   # branch tạo ra
-          title: Merge to main
-          base: main                      # target main
+          branch: feature/merge-to-main   # branch tự động tạo ra
+          title: Merge feature to main
+          base: main                      # target là main
+          body: |
+            PR này được tạo tự động sau khi build Docker image thành công.
