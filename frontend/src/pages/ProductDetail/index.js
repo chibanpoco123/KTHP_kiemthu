@@ -132,9 +132,12 @@ function ProductDetail() {
             <Text maxWidth={400} py="2">
               {data.description}
             </Text>
-            <Text color="blue.600" fontSize="2xl">
-              Subtotal: {findBasketItem.quantity * Number(data.price)}$
-            </Text>
+           <Text color="blue.600" fontSize="2xl">
+  {findBasketItem
+    ? `Subtotal: ${findBasketItem.quantity * Number(data.price)}$`
+    : `Price: ${data.price}$`}
+</Text>
+
 
             <CardFooter>
               {findBasketItem ? (

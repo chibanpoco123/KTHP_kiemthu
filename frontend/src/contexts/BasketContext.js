@@ -63,17 +63,17 @@ const BasketProvider = ({ children }) => {
   // Thêm hoặc xóa khỏi giỏ
   const addToBasket = (data, findBasketItem) => {
     if (!findBasketItem) {
+      // Thêm mới
       return setItems((items) => [{ ...data, quantity: 1 }, ...items]);
     }
 
-    const filtered = items.filter((item) => item._id !== findBasketItem._id);
-    setItems(filtered);
+    // Nếu đã tồn tại thì xóa
+    setItems((items) => items.filter((item) => item._id !== findBasketItem._id));
   };
 
   // Xóa 1 sản phẩm
   const removeFromBasket = (item_id) => {
-    const filtered = items.filter((item) => item._id !== item_id);
-    setItems(filtered);
+    setItems((items) => items.filter((item) => item._id !== item_id));
   };
 
   // Xóa toàn bộ giỏ
