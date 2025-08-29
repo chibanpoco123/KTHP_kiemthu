@@ -56,7 +56,6 @@ export { BasketProvider, useBasket };
  */
 
 
-import { useState, createContext, useContext, useEffect } from "react";
 
 const BasketContext = createContext();
 
