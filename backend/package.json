@@ -18,7 +18,7 @@
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
-    "razorpay": "^3.0.0",
+    "razorpay": "^2.9.6",
     "sucrase": "^3.18.1"
   },
   "devDependencies": {

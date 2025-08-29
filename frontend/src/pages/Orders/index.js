@@ -31,6 +31,7 @@ const Orders = () => {
     const loadOrders = async () => {
       try {
         const data = await fetchOrders();
+        console.log("",data)
         setOrders(data);
       } catch (error) {
         console.error('Error loading orders:', error);
@@ -154,62 +155,63 @@ const Orders = () => {
                   <Divider />
 
                   {/* Customer Info */}
-                  <Box>
-                    <Text fontWeight="bold" mb={2}>
-                      Thông tin khách hàng:
-                    </Text>
-                    <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                      <GridItem>
-                        <Text fontSize="sm">
-                          <strong>Tên:</strong> {order.customerInfo.fullName}
-                        </Text>
-                        <Text fontSize="sm">
-                          <strong>Email:</strong> {order.customerInfo.email}
-                        </Text>
-                      </GridItem>
-                      <GridItem>
-                        <Text fontSize="sm">
-                          <strong>SĐT:</strong> {order.customerInfo.phone}
-                        </Text>
-                        <Text fontSize="sm">
-                          <strong>Địa chỉ:</strong> {order.customerInfo.shippingAddress}
-                        </Text>
-                      </GridItem>
-                    </Grid>
-                  </Box>
+                 <Box>
+  <Text fontWeight="bold" mb={2}>
+    Thông tin khách hàng:
+  </Text>
+  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+    <GridItem>
+      <Text fontSize="sm">
+        <strong>Tên:</strong> {order.customerInfo?.fullName || "N/A"}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Email:</strong> {order.customerInfo?.email || "N/A"}
+      </Text>
+    </GridItem>
+    <GridItem>
+      <Text fontSize="sm">
+        <strong>SĐT:</strong> {order.customerInfo?.phone || "N/A"}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Địa chỉ:</strong> {order.customerInfo?.shippingAddress || order.customerInfo?.shippingAddre || "N/A"}
+      </Text>
+    </GridItem>
+  </Grid>
+</Box>
 
                   <Divider />
 
                   {/* Order Items */}
                   <Box>
-                    <Text fontWeight="bold" mb={2}>
-                      Sản phẩm:
-                    </Text>
-                    <VStack spacing={3} align="stretch">
-                      {order.items.map((item, index) => (
-                        <HStack key={index} spacing={4}>
-                          <Image
-                            src={item.product.photos[0]}
-                            alt={item.product.title}
-                            boxSize="60px"
-                            objectFit="cover"
-                            borderRadius="md"
-                          />
-                          <Box flex={1}>
-                            <Text fontWeight="semibold">
-                              {item.product.title}
-                            </Text>
-                            <Text fontSize="sm" color="gray.600">
-                              Số lượng: {item.quantity}
-                            </Text>
-                            <Text fontSize="sm" color="blue.600">
-                              ${item.price}
-                            </Text>
-                          </Box>
-                        </HStack>
-                      ))}
-                    </VStack>
-                  </Box>
+  <Text fontWeight="bold" mb={2}>
+    Sản phẩm:
+  </Text>
+  <VStack spacing={3} align="stretch">
+    {order.items?.map((item, index) => (
+      <HStack key={index} spacing={4}>
+        <Image
+          src={item?.product?.photos?.[0] || "https://via.placeholder.com/60"}
+          alt={item?.product?.title || "Sản phẩm"}
+          boxSize="60px"
+          objectFit="cover"
+          borderRadius="md"
+        />
+        <Box flex={1}>
+          <Text fontWeight="semibold">
+            {item?.product?.title || "Không rõ sản phẩm"}
+          </Text>
+          <Text fontSize="sm" color="gray.600">
+            Số lượng: {item?.quantity || 0}
+          </Text>
+          <Text fontSize="sm" color="blue.600">
+            ${item?.price || 0}
+          </Text>
+        </Box>
+      </HStack>
+    ))}
+  </VStack>
+</Box>
+
 
                   <Divider />
 
