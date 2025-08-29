@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Text,
@@ -10,17 +10,35 @@ import {
   Divider,
   ButtonGroup,
   Button,
+  useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useBasket } from "../../contexts/BasketContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Cards({ item }) {
   const { addToBasket, items } = useBasket();
+  const { loggedIn } = useAuth();
+  const toast = useToast();
 
   const findBasketItem = items.find(
     (basket_item) => basket_item._id === item._id
   );
+
+  const handleAddToBasket = () => {
+    if (!loggedIn) {
+      toast({
+        title: "Thêm vào giỏ hàng thành công!",
+        description: "Bạn có thể đăng nhập sau để hoàn tất đơn hàng.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    addToBasket(item, findBasketItem);
+  };
 
   return (
     <Card maxW="sm">
@@ -46,13 +64,22 @@ function Cards({ item }) {
       </Link>
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button
-            variant="solid"
-            colorScheme={findBasketItem ? "red" : "green"}
-            onClick={() => addToBasket(item, findBasketItem)}
+          <Tooltip 
+            label={!loggedIn ? "Bạn có thể thêm vào giỏ hàng và đăng nhập sau để checkout" : ""}
+            isDisabled={loggedIn}
           >
-            {findBasketItem ? "Remove from Basket" : "Add to Basket"}
-          </Button>
+            <Button
+              variant={findBasketItem ? "outline" : "solid"}
+              colorScheme={findBasketItem ? "white" : "green"}
+              onClick={handleAddToBasket}
+              _hover={{
+                bg: findBasketItem ? "whiteAlpha.200" : "green.600",
+                color: findBasketItem ? "white" : "white"
+              }}
+            >
+              {findBasketItem ? "Remove from Basket" : "Add to Basket"}
+            </Button>
+          </Tooltip>
           <Button variant="ghost" colorScheme="blue">
             Add to cart
           </Button>

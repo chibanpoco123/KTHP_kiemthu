@@ -22,6 +22,15 @@ function Navbar() {
         </ul>
       </div>
       <div className={styles.right}>
+        {/* Hiển thị giỏ hàng cho tất cả người dùng */}
+        {items.length > 0 && (
+          <Link to="/basket">
+            <Button colorScheme="pink" variant="outline">
+              Basket ({items.length})
+            </Button>
+          </Link>
+        )}
+
         {!loggedIn && (
           <>
             <Link to="/signin">
@@ -34,13 +43,11 @@ function Navbar() {
         )}
         {loggedIn && (
           <>
-            {items.length > 0 && (
-              <Link to="/basket">
-                <Button colorScheme="pink" variant="outline">
-                  Basket ({items.length})
-                </Button>
-              </Link>
-            )}
+            <Link to="/orders">
+              <Button colorScheme="teal" variant="ghost">
+                Orders
+              </Button>
+            </Link>
 
             {user?.role === "admin" && (
               <Link to="/admin">
