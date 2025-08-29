@@ -31,7 +31,7 @@ function Signup({ history }) {
           password: values.password,
         });
         login(registerResponse);
-       navigate("/profile");
+       navigate("/");
         alert('đăng nhập thành công ')
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });

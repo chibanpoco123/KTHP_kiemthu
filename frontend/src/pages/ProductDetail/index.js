@@ -11,12 +11,17 @@ import {
   Button,
   CardBody,
   CardFooter,
+  useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function ProductDetail() {
   const { product_id } = useParams();
   const { addToBasket, items } = useBasket();
+  const { loggedIn } = useAuth();
+  const toast = useToast();
 
   const { isLoading, isError, data } = useQuery(["product", product_id], () =>
     fetchProduct(product_id)
@@ -32,6 +37,19 @@ function ProductDetail() {
 
   const findBasketItem = items.find((item) => item._id === product_id);
   const images = data.photos.map((url) => ({ original: url }));
+
+  const handleAddToBasket = () => {
+    if (!loggedIn) {
+      toast({
+        title: "Thêm vào giỏ hàng thành công!",
+        description: "Bạn có thể đăng nhập sau để hoàn tất đơn hàng.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    addToBasket(data, findBasketItem);
+  };
 
   return (
     <div>
@@ -55,13 +73,22 @@ function ProductDetail() {
           </CardBody>
 
           <CardFooter>
-            <Button
-              variant="solid"
-              colorScheme={findBasketItem ? "red" : "whatsapp"}
-              onClick={() => addToBasket(data, findBasketItem)}
+            <Tooltip 
+              label={!loggedIn ? "Bạn có thể thêm vào giỏ hàng và đăng nhập sau để checkout" : ""}
+              isDisabled={loggedIn}
             >
-              {findBasketItem ? "Remove from basket" : "Add to Basket"}
-            </Button>
+              <Button
+                variant={findBasketItem ? "outline" : "solid"}
+                colorScheme={findBasketItem ? "white" : "green"}
+                onClick={handleAddToBasket}
+                _hover={{
+                  bg: findBasketItem ? "whiteAlpha.200" : "green.600",
+                  color: findBasketItem ? "white" : "white"
+                }}
+              >
+                {findBasketItem ? "Remove from basket" : "Add to Basket"}
+              </Button>
+            </Tooltip>
           </CardFooter>
         </Stack>
       </Card>
