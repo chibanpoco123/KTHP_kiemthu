@@ -90,6 +90,22 @@ export const postOrder = async (input) => {
   return data;
 };
 
+export const postRazorpayOrder = async (input) => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/order/razorpay`,
+    input
+  );
+  return data;
+};
+
+export const updatePaymentStatus = async (orderId, paymentData) => {
+  const { data } = await axios.put(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/order/${orderId}/payment-status`,
+    paymentData
+  );
+  return data;
+};
+
 export const fetchOrders = async () => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_BASE_ENDPOINT}/order`

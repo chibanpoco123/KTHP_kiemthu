@@ -21,6 +21,6 @@ const ProductSchema = new Schema({
   },
 });
 
-const User = _mongoose2.default.model('product', ProductSchema);
+const product = _mongoose2.default.model('product', ProductSchema);
 
-exports. default = User;
+exports. default = product;

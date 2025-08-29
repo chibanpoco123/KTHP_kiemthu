@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const BasketContext = createContext();
 
@@ -6,6 +7,7 @@ const defaultBasket = JSON.parse(localStorage.getItem("basket")) || [];
 
 const BasketProvider = ({ children }) => {
   const [items, setItems] = useState(defaultBasket);
+  const { loggedIn } = useAuth();
 
   useEffect(() => {
     localStorage.setItem("basket", JSON.stringify(items));
@@ -27,12 +29,18 @@ const BasketProvider = ({ children }) => {
 
   const emptyBasket = () => setItems([]);
 
+  // Kiểm tra xem có cần đăng nhập để checkout không
+  const requiresLogin = () => {
+    return items.length > 0 && !loggedIn;
+  };
+
   const values = {
     items,
     setItems,
     addToBasket,
     removeFromBasket,
     emptyBasket,
+    requiresLogin,
   };
 
   return (
