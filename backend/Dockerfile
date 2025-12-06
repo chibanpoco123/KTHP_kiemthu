@@ -1,21 +1,21 @@
-# Use the official Node.js image as the base image
-# The 'lts' tag is used for the latest Long-Term Support version
-FROM node:lts
+FROM node:20
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+# Copy package files from backend directory
+COPY backend/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy the rest of the application code to the container
-COPY . .
+# Copy backend source code
+COPY backend/ ./
 
-# Expose the port your application will run on (default for many Node.js apps is 3000)
+# Build the application from src to dist
+RUN npm run build
+
+# Expose port
 EXPOSE 4000
 
-# Define the command to run your application
-CMD ["npm", "run", "dev"]
+# Start the application (runs from dist/index.js)
+CMD ["npm", "start"]
